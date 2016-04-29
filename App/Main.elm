@@ -2,7 +2,7 @@ module Main where
 
 import Html exposing (Html, div, input, text)
 import Html.Events exposing (on, targetValue)
-import Html.Attributes exposing (type')
+import Html.Attributes exposing (attribute, class, type')
 import List exposing (repeat)
 import Signal exposing (Address)
 import List
@@ -39,9 +39,14 @@ update action model =
 -- Type for our view:
 view : Address Action -> Model -> Html
 view address model =
-  div []
-    [ input [
-      type' "text"
-    , on "input" targetValue (\phrase -> Signal.message address (UpdateText phrase))]
-      []
-    , text (String.repeat 3 model) ]
+  div [class "mdl-grid"]
+  [
+    div[ class "mdl-textfield mdl-js-textfield"]
+    [ input [ class "mdl-textfield__input"
+            , type' "text"
+            , on "input" targetValue
+                    (\phrase -> Signal.message address (UpdateText phrase))]
+              []
+            , text (String.repeat 3 model)
+    ]
+  ]
