@@ -1,31 +1,47 @@
 module Main where
 
-import Html exposing (div, text, Html)
-import StartApp.Simple as StartApp
+import Html exposing (Html, div, input, text)
+import Html.Events exposing (on, targetValue)
+import Html.Attributes exposing (type')
+import List exposing (repeat)
 import Signal exposing (Address)
+import List
+import String
 
--- # Main
+-- StartApp takes Model, View, and Update
+-- Model -> View Trigger an Action, Action is passed to the Update function
+-- new Model is passed into the view again
+import StartApp.Simple exposing (start)
 
 main =
-  StartApp.start { model = model, view = view, update = update }
+  start {model = model, view = view, update = update}
 
--- # Model
-
+-- define a model
 type alias Model = String
 model : Model
-model = ""
+model = "What it do, breh?"
 
--- # Actions
+-- create an action type
+-- can pass UpdateText anywhere a function
+-- expects an action
+type Action = UpdateText String
+-- Update function
+-- Update takes an Actions
 
+-- reaction to action types are specified in
+-- the update function
 update : Action -> Model -> Model
 update action model =
   case action of
-    NoOp -> model
+    UpdateText newStr -> newStr
 
--- # View
-
-type Action = NoOp
-
+-- View consumes and address that passes to an Action
+-- Type for our view:
 view : Address Action -> Model -> Html
 view address model =
-  div [] [text "Hello, verld."]
+  div []
+    [ input [
+      type' "text"
+    , on "input" targetValue (\phrase -> Signal.message address (UpdateText phrase))]
+      []
+    , text (String.repeat 3 model) ]
