@@ -47,6 +47,6 @@ view address model =
             , on "input" targetValue
                     (\phrase -> Signal.message address (UpdateText phrase))]
               []
-            , text (String.repeat 5 model)
+            , text (String.repeat 3 model)
     ]
   ]
